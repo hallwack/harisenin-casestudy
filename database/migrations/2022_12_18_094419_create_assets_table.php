@@ -15,6 +15,9 @@ return new class extends Migration
     {
         Schema::create('assets', function (Blueprint $table) {
             $table->id();
+            $table->string("name");
+            $table->string("path");
+            $table->integer("size");
             $table->timestamps();
         });
     }
