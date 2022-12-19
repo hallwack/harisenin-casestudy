@@ -17,4 +17,9 @@ class Asset extends Model
     {
         return $this->belongsTo(Category::class, 'asset_id');
     }
+
+    public function product()
+    {
+        return $this->belongsToMany(Product::class, 'product_assets', 'asset_id', 'product_id');
+    }
 }
