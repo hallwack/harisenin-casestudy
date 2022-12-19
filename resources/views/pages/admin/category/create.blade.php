@@ -7,18 +7,19 @@
     <div class="flex justify-between">
         <h1 class="text-3xl font-semibold">Category - Create</h1>
     </div>
-    <form action="{{ route('categories.store') }}" method="POST" class="flex flex-col h-full gap-6" enctype="multipart/form-data">
+    <form action="{{ route('categories.store') }}" method="POST" class="flex flex-col h-full gap-6"
+        enctype="multipart/form-data">
+        @csrf
         <div class="form-control w-full max-w-xs">
-            @csrf
             <label class="label" for="name">
-                <span class="label-text">What is your name?</span>
+                <span class="label-text">Category Name</span>
             </label>
-            <input type="text" name="name" id="name" placeholder="Type here"
+            <input type="text" name="name" id="name" placeholder="Name"
                 class="py-2 px-4 rounded-lg input input-bordered w-auto max-w-xs" />
         </div>
         <div class="form-control w-full max-w-xs">
             <label class="label" for="image">
-                <span class="label-text">Pick a file</span>
+                <span class="label-text">Image</span>
             </label>
             <input type="file" name="image" id="image" class="file-input file-input-bordered w-auto max-w-xs" />
         </div>
