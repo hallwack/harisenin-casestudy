@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['category_name', 'category_slug', 'asset_id'];
+
+    public function asset()
+    {
+        return $this->hasOne(Asset::class);
+    }
 }
