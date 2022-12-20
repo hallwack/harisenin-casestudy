@@ -13,11 +13,10 @@
     <div class="flex min-h-screen">
         <div class="flex w-96 flex-col items-center justify-between bg-inherit py-12">
             <div class="flex w-full flex-col gap-12">
-                <h1 class="text-center text-xl font-medium">Harisenin Studycase</h1>
+                <a href="{{ route('home') }}" class="text-center text-xl font-medium">Harisenin Studycase</a>
                 <div class="flex flex-col gap-8 mx-8">
-                    <a class="h-8 flex-row items-center border-r-sky-300 text-lg font-medium">Home</a>
-                    <a class="h-8 flex-row items-center border-r-sky-300 text-lg font-medium">Product</a>
-                    <a class="h-8 flex-row items-center border-r-sky-300 text-lg font-medium">Category</a>
+                    <a href="{{ route('products.index' )}}" class="h-8 flex-row items-center border-r-sky-300 text-lg font-medium">Product</a>
+                    <a href="{{ route('categories.index' )}}" class="h-8 flex-row items-center border-r-sky-300 text-lg font-medium">Category</a>
                 </div>
             </div>
         </div>
