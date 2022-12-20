@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Asset;
 use App\Models\Category;
+use Carbon\Carbon;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+
+use function App\Http\Controllers\slugTitle as ControllersSlugTitle;
 
 class CategoryController extends Controller
 {
@@ -17,7 +20,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('pages.admin.category.index');
+        $categories = Category::join('assets', 'categories.asset_id', 'assets.id')->get();
+        return view('pages.admin.category.index', ['categories' => $categories]);
     }
 
     /**
@@ -43,6 +47,14 @@ class CategoryController extends Controller
             'image' => 'required|mimes:jpg,bmp,png'
         ]);
 
+        function slugTitle($req)
+        {
+            $slug = Str::slug($req);
+            $slug .= '-';
+            $slug .= Carbon::parse(now())->format('mdY');
+            return $slug;
+        }
+
         $item['image'] = $request->file('image');
 
         $upload = Cloudinary::upload($request->file('image')->getRealPath())->getSecurePath();
@@ -52,14 +64,13 @@ class CategoryController extends Controller
             'size' => $item['image']->getSize()
         ]);
 
-        /* dd($assets_store->id); */
         $item['category_name'] = $slug = $request->name;
-        $item['category_slug'] = Str::slug($slug);
+        $item['category_slug'] = ControllersSlugTitle($slug);
         $item['asset_id'] = $assets_store->id;
 
         Category::create($item);
 
-        return view('pages.admin.category.index');
+        return redirect()->route('categories.index');
     }
 
     /**
