@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,13 +16,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('pages.home');
-});
+Route::get('/', [HomeController::class, 'home'])->name('home');
+Route::get('/category', [HomeController::class, 'category'])->name('category');
+Route::get('/product', [HomeController::class, 'product'])->name('product');
+Route::get('/product/{slug}', [HomeController::class, 'details'])->name('product.detail');
 
 Route::resource('products', ProductController::class);
 Route::resource('categories', CategoryController::class);
-
-Route::get('/iyh', function () {
-    return view('mang');
-});
