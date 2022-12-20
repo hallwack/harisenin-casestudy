@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Asset;
 use App\Models\Product;
+use Carbon\Carbon;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+
+use function App\Http\Controllers\slugTitle as ControllersSlugTitle;
 
 class ProductController extends Controller
 {
@@ -18,7 +19,8 @@ class ProductController extends Controller
    */
   public function index()
   {
-    //
+    $products = Product::with('asset')->get();
+    return view('pages.admin.product.index', ['products' => $products]);
   }
 
   /**
@@ -47,8 +49,16 @@ class ProductController extends Controller
       'desc' => 'required'
     ]);
 
+    function slugTitle($req)
+    {
+      $slug = Str::slug($req);
+      $slug .= '-';
+      $slug .= Carbon::parse(now())->format('mdY');
+      return $slug;
+    }
+
     $item['product_name'] = $slug =  $request->name;
-    $item['product_slug'] = Str::slug($slug);
+    $item['product_slug'] = ControllersSlugTitle($slug);
     $item['price'] = $request->price;
     $item['description'] = $request->desc;
 
@@ -65,7 +75,7 @@ class ProductController extends Controller
     $product = $product->create($item);
     $product->asset()->createMany($dataImg);
 
-    return view('pages.admin.product.index');
+    return redirect()->route('products.index');
   }
 
   /**
@@ -76,7 +86,8 @@ class ProductController extends Controller
    */
   public function show(Product $product)
   {
-    //
+    $product->asset->first();
+    return view('pages.admin.product.details', ['product' => $product]);
   }
 
   /**
