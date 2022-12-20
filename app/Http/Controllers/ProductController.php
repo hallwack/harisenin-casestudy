@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Asset;
 use App\Models\Product;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -52,9 +53,10 @@ class ProductController extends Controller
     $item['description'] = $request->desc;
 
     foreach ($request->file('image') as $imgFile) {
+      $upload = Cloudinary::upload($imgFile->getRealPath())->getSecurePath();
       $dataImg[] = [
         'name' => $imgFile->getFilename() . '.' . $imgFile->getClientOriginalExtension(),
-        'path' => $imgFile->getPathname(),
+        'path' => $upload,
         'size' => $imgFile->getSize()
       ];
     }

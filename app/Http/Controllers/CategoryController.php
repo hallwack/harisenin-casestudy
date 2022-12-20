@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Asset;
 use App\Models\Category;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class CategoryController extends Controller
@@ -45,9 +45,10 @@ class CategoryController extends Controller
 
         $item['image'] = $request->file('image');
 
+        $upload = Cloudinary::upload($request->file('image')->getRealPath())->getSecurePath();
         $assets_store = Asset::create([
             'name' => $item['image']->getFilename() . '.' . $item['image']->getClientOriginalExtension(),
-            'path' => $item['image']->getPathname(),
+            'path' => $upload,
             'size' => $item['image']->getSize()
         ]);
 
